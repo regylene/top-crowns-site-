@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Crowns - Loja Oficial</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #4b0082, #8b00ff);
+      color: white;
+    }
+    header {
+      background-color: #2e004f;
+      padding: 20px;
+      text-align: center;
+      color: gold;
+      font-size: 32px;
+      font-weight: bold;
+    }
+    .section {
+      padding: 20px;
+      text-align: center;
+    }
+    .pack {
+      background: #ffffff10;
+      border: 1px solid gold;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px auto;
+      width: 90%;
+      max-width: 300px;
+    }
+    .btn {
+      background-color: gold;
+      color: #2e004f;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .hidden { display: none; }
+    input[type="text"] {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 80%;
+    }
+    .quantity-controls button {
+      background: gold;
+      color: #2e004f;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+    .total-info {
+      font-size: 18px;
+      margin-top: 10px;
+      color: #fff8dc;
+    }
+  </style>
+</head>
+<body>
+  <header>Top Crowns</header>
+  
+  <div class="section" id="inicio">
+    <h2>Escolha seu pacote</h2>
+    <div class="pack">
+      <p><strong>25 Crowns</strong> - R$3,00</p>
+      <button class="btn" onclick="selecionarPacote(3)">Selecionar</button>
+    </div>
+    <div class="pack">
+      <p><strong>75 Crowns</strong> - R$5,00</p>
+      <button class="btn" onclick="selecionarPacote(5)">Selecionar</button>
+    </div>
+    <div class="pack">
+      <p><strong>150 Crowns</strong> - R$15,00</p>
+      <button class="btn" onclick="selecionarPacote(15)">Selecionar</button>
+    </div>
+    <div class="pack">
+      <p><strong>275 Crowns</strong> - R$25,00</p>
+      <button class="btn" onclick="selecionarPacote(25)">Selecionar</button>
+    </div>
+    <div class="pack">
+      <p><strong>300 Crowns</strong> - R$35,00</p>
+      <button class="btn" onclick="selecionarPacote(35)">Selecionar</button>
+    </div>
+    <div class="pack">
+      <p><strong>375 Crowns</strong> - R$40,00</p>
+      <button class="btn" onclick="selecionarPacote(40)">Selecionar</button>
+    </div>
+    <div class="pack">
+      <p><strong>440 Crowns</strong> - R$55,00</p>
+      <button class="btn" onclick="selecionarPacote(55)">Selecionar</button>
+    </div>
+  </div>
+
+  <div class="section hidden" id="formulario">
+    <h2>Preencha seus dados</h2>
+    <input type="text" id="idJogo" placeholder="Seu ID do Avakin">
+    <div class="quantity-controls">
+      <p>Quantidade:</p>
+      <button onclick="alterarQuantidade(-1)">-</button>
+      <span id="quantidade">1</span>
+      <button onclick="alterarQuantidade(1)">+</button>
+    </div>
+    <button class="btn" onclick="irParaPagamento()">Fazer Compra</button>
+    <p id="mensagemErro" style="color: #ffcccb; display: none; margin-top: 10px;">Por favor, preencha todos os dados corretamente!</p>
+  </div>
+
+  <div class="section hidden" id="pagamento">
+    <h2>Pagamento via Pix</h2>
+    <div class="total-info" id="resumoPagamento"></div>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126360014BR.GOV.BCB.PIX011164981213575520400005303986540530.005802BR5920Top Crowns Store6009SAO PAULO62070503***6304A9D7" alt="QR Code Pix">
+    <p><strong>Código Pix:</strong></p>
+    <input type="text" id="codigoPix" readonly value="00020126360014BR.GOV.BCB.PIX011164981213575520400005303986540530.005802BR5920Top Crowns Store6009SAO PAULO62070503***6304A9D7">
+    <button class="btn" onclick="copiarCodigoPix()">Copiar código Pix</button>
+    <p style="margin-top: 10px;">Receba seus Crowns em até 1 hora!</p>
+    <p><a href="https://wa.me/5564981213575" class="btn" target="_blank">Falar com Suporte (WhatsApp)</a></p>
+  </div>
+
+  <script>
+    let valorSelecionado = 0;
+    let quantidade = 1;
+
+    function selecionarPacote(valor) {
+      valorSelecionado = valor;
+      document.getElementById('inicio').classList.add('hidden');
+      document.getElementById('formulario').classList.remove('hidden');
+    }
+
+    function alterarQuantidade(delta) {
+      quantidade = Math.max(1, quantidade + delta);
+      document.getElementById('quantidade').textContent = quantidade;
+    }
+
+    function irParaPagamento() {
+      const idJogo = document.getElementById('idJogo').value;
+      if (idJogo.trim() === '') {
+        document.getElementById('mensagemErro').style.display = 'block';
+        return;
+      }
+      document.getElementById('mensagemErro').style.display = 'none';
+      const total = valorSelecionado * quantidade;
+      document.getElementById('resumoPagamento').innerHTML = `<strong>ID:</strong> ${idJogo}<br><strong>Quantidade:</strong> ${quantidade}x<br><strong>Total:</strong> R$${total.toFixed(2)}`;
+      document.getElementById('formulario').classList.add('hidden');
+      document.getElementById('pagamento').classList.remove('hidden');
+    }
+
+    function copiarCodigoPix() {
+      const codigo = document.getElementById('codigoPix');
+      codigo.select();
+      codigo.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      alert('Código Pix copiado!');
+    }
+  </script>
+</body>
+</html>
